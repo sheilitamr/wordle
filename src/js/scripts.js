@@ -15,31 +15,33 @@ const words = [
 ];
 
 const randomWord = () => {
-  Math.floor(Math.random() * words.length);
+  const randomNumber = Math.floor(Math.random() * words.length);
+
+  return words[randomNumber];
 };
-const secretWord = 'arbol';
 
-const userWord = 'lasal';
+const secretWord = randomWord();
+let userWord;
+console.log(secretWord);
 
-const wordEqual = () => {
+const checkWord = () => {
+  const secretWordArray = secretWord.split('');
+  const userWordArray = userWord.split('');
+
+  console.log(userWord);
+
   if (secretWord === userWord) {
     console.log(`Has acertado`);
+    return;
   }
-};
 
-const secretWordArray = secretWord.split('');
-const userWordArray = userWord.split('');
-
-const letterExist = () => {
   userWordArray.forEach((letter, index) => {
     if (secretWordArray[index] === letter) {
       secretWordArray[index] = 0;
       console.log(`La letra ${letter} está en la posición correcta ${index}`);
     }
   });
-};
 
-const letterNoExist = () => {
   userWordArray.forEach((letter, index) => {
     if (!secretWordArray.includes(letter)) {
       console.log(`La letra ${letter} no existe`);
@@ -51,7 +53,13 @@ const letterNoExist = () => {
   });
 };
 
+const setUserWord = inputValue => {
+  userWord = inputValue;
+  checkWord();
+};
+
 form.addEventListener('submit', e => {
   e.preventDefault();
+  setUserWord(e.target.word.value);
   e.target.reset();
 });
