@@ -9,7 +9,23 @@
     <title>Vite App</title>
   </head>
   <body>
-    <h1>Hola</h1>
-    <img src="./assets/images/cute-cat.webp" alt="" />
+    <h1>WORDLE</h1>
+    <div id="game-board" class="game-board">
+      <div class="game-board__row"></div>
+      <div class="game-board__row"></div>
+      <div class="game-board__row"></div>
+      <div class="game-board__row"></div>
+      <div class="game-board__row"></div>
+    </div>
+
+    <form id="user-word">
+      <input
+        type="text"
+        name="word"
+        class="input"
+        placeholder="type your solution"
+      />
+    </form>
+    <script src="js/scripts.js"></script>
   </body>
 </html>
