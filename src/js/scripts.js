@@ -1,5 +1,6 @@
 const gameBoard = document.getElementById('game-board');
 const form = document.getElementById('user-word');
+const errorMessage = document.getElementById('error-message');
 
 const words = [
   'perro',
@@ -14,15 +15,27 @@ const words = [
   'arroz'
 ];
 
-const randomWord = () => {
-  const randomNumber = Math.floor(Math.random() * words.length);
+let secretWord;
+let userWord;
+let counterRow = 0;
 
-  return words[randomNumber];
+const createElements = () => {
+  for (let i = 0; i < 5; i++) {
+    const newDiv = document.createElement('div');
+    newDiv.classList.add('game-board__row');
+    for (let j = 0; j < 5; j++) {
+      const newSpan = document.createElement('span');
+      newSpan.classList.add('letter');
+      newDiv.append(newSpan);
+    }
+    gameBoard.append(newDiv);
+  }
 };
 
-const secretWord = randomWord();
-let userWord;
-console.log(secretWord);
+const randomWord = () => {
+  const randomNumber = Math.floor(Math.random() * words.length);
+  secretWord = words[randomNumber];
+};
 
 const checkWord = () => {
   const secretWordArray = secretWord.split('');
@@ -31,32 +44,61 @@ const checkWord = () => {
   console.log(userWord);
 
   if (secretWord === userWord) {
-    console.log(`Has acertado`);
+    userWordArray.forEach((letter, index) => {
+      const currentLetter = gameBoard.children[counterRow].children[index];
+      currentLetter.classList.add('letter--correct');
+    });
+
     return;
   }
 
   userWordArray.forEach((letter, index) => {
+    const currentLetter = gameBoard.children[counterRow].children[index];
     if (secretWordArray[index] === letter) {
       secretWordArray[index] = 0;
-      console.log(`La letra ${letter} está en la posición correcta ${index}`);
+
+      currentLetter.classList.add('letter--correct');
     }
   });
 
   userWordArray.forEach((letter, index) => {
+    const currentLetter = gameBoard.children[counterRow].children[index];
     if (!secretWordArray.includes(letter)) {
-      console.log(`La letra ${letter} no existe`);
+      if (!currentLetter.classList.contains('letter--correct')) {
+        currentLetter.classList.add('letter--incorrect');
+      }
     } else {
       const letterPosition = secretWordArray.indexOf(letter);
       secretWordArray[letterPosition] = 0;
-      console.log(`La letra ${letter} está en otra posición`);
+      if (!currentLetter.classList.contains('letter--correct')) {
+        currentLetter.classList.add('letter--present');
+      }
     }
   });
 };
 
+const printWord = () => {
+  const currentRow = gameBoard.children[counterRow];
+  const letters = currentRow.querySelectorAll('span');
+  letters.forEach((span, index) => {
+    span.textContent = userWord[index];
+  });
+  counterRow++;
+};
 const setUserWord = inputValue => {
+  if (inputValue.length !== 5) {
+    errorMessage.textContent = 'Debe ser una palabra de 5 letras';
+    return;
+  }
+  errorMessage.textContent = '';
   userWord = inputValue;
   checkWord();
+  printWord();
 };
+
+randomWord();
+console.log(secretWord);
+createElements();
 
 form.addEventListener('submit', e => {
   e.preventDefault();

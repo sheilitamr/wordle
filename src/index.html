@@ -9,14 +9,8 @@
     <title>Vite App</title>
   </head>
   <body>
-    <h1>WORDLE</h1>
-    <div id="game-board" class="game-board">
-      <div class="game-board__row"></div>
-      <div class="game-board__row"></div>
-      <div class="game-board__row"></div>
-      <div class="game-board__row"></div>
-      <div class="game-board__row"></div>
-    </div>
+    <h1 class="title">WORDLE</h1>
+    <div id="game-board" class="game-board"></div>
 
     <form id="user-word">
       <input
@@ -24,7 +18,9 @@
         name="word"
         class="input"
         placeholder="type your solution"
+        autocomplete="off"
       />
+      <p id="error-message" class="error-message"></p>
     </form>
     <script src="js/scripts.js"></script>
   </body>
